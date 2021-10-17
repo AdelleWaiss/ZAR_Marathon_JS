@@ -66,17 +66,28 @@ function changeHP(player) {
     if (player.hp <= 0) {
         player.hp = 0;
         $playerLife.style.width = player.hp + '%';
-        $randomButton.disabled = true;
-        $arenas.appendChild(playerLose(player.name));
+        
     }
     return player.hp;
 }
 
 function announceWinner(player) {
+    const winnerText;
     if (player.hp === 0) {
         if (player1.hp === player2.hp) {
+            winnerText = 'is Tie!!!';
+        } else
+        if (player1.hp < player2.hp) {
+             winnerText = player2.name + ' is Tie!!!';
         }
+        else {
+            winnerText = player1.name + ' is Tie!!!';
+        }
+        return winnerText;
     }
+
+    $randomButton.disabled = true;
+    $arenas.appendChild(playerWin(player.name));
 }
 
 function playerLose(name) {
@@ -85,11 +96,14 @@ function playerLose(name) {
     return $loseTitle;
 }
 
-function playerWin(name) {
-    const $loseTitle = createElement('div', 'loseTitle');
-    $loseTitle.innerText = name + ' lose';
-    return $loseTitle;
+function playerWin(player) {
+    const $winnerTitle = createElement('div', 'loseTitle');
+
+    announceWinner(player);
+    $winnerTitle.innerText = winnerText;
+    return $winnerTitle;
 }
+
 $randomButton.addEventListener('click', function () {
     console.log('####: Click Random Button');
     changeHP(player1);
